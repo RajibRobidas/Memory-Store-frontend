@@ -57,7 +57,7 @@ function SignupPage() {
         role,
         mobile,
       });
-      localStorage.setItem("token", response.data.jwt);
+      // On success, just navigate to /photos
       navigate("/photos");
     } catch (error) {
       setError(error.response?.data?.message || error.message);

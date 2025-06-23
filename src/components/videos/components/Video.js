@@ -19,11 +19,7 @@ const Video = () => {
     const fetchVideos = async () => {
       try {
         const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
-        const token = localStorage.getItem("token");
-        const email = "user@example.com"; // Replace with actual user email if available
-        const response = await axios.get(`${backendUrl}/videos/user/${email}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await axios.get(`${backendUrl}/videos/user/${searchTerm}`);
         setVideos(response.data);
         setFilteredVideos(response.data);
         setLoading(false);

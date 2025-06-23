@@ -27,7 +27,7 @@ function LoginPage() {
         email,
         password,
       });
-      localStorage.setItem("token", response.data.jwt);
+      // On success, just navigate to /photos
       navigate("/photos");
     } catch (error) {
       setError(error.response?.data?.message || "Invalid email or password.");

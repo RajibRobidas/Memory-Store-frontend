@@ -49,18 +49,45 @@ function SignupPage() {
     setError("");
 
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
-      await axios.post(`${backendUrl}/auth/signup`, {
+      // More robust environment variable handling
+      let backendUrl;
+      try {
+        backendUrl = import.meta.env.VITE_BACKEND_URL;
+        if (!backendUrl) {
+          backendUrl = "http://localhost:8081";
+        }
+      } catch (envError) {
+        console.warn("Environment variable not found, using fallback:", envError);
+        backendUrl = "http://localhost:8081";
+      }
+      
+      console.log("Attempting signup with backend URL:", backendUrl);
+      console.log("Signup data:", { fullName, email, password: "***", role, mobile });
+      
+      const response = await axios.post(`${backendUrl}/auth/signup`, {
         fullName,
         email,
         password,
         role,
         mobile,
       });
+      
+      console.log("Signup successful:", response.data);
       // On success, just navigate to /photos
       navigate("/photos");
     } catch (error) {
-      setError(error.response?.data?.message || error.message);
+      console.error("Signup error:", error);
+      console.error("Error response:", error.response);
+      
+      if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.message) {
+        setError(error.message);
+      } else {
+        setError("Signup failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

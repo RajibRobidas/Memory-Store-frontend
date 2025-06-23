@@ -22,15 +22,42 @@ function LoginPage() {
     setError("");
 
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
-      await axios.post(`${backendUrl}/auth/signin`, {
+      // More robust environment variable handling
+      let backendUrl;
+      try {
+        backendUrl = import.meta.env.VITE_BACKEND_URL;
+        if (!backendUrl) {
+          backendUrl = "http://localhost:8081";
+        }
+      } catch (envError) {
+        console.warn("Environment variable not found, using fallback:", envError);
+        backendUrl = "http://localhost:8081";
+      }
+      
+      console.log("Attempting login with backend URL:", backendUrl);
+      console.log("Login data:", { email, password: "***" });
+      
+      const response = await axios.post(`${backendUrl}/auth/signin`, {
         email,
         password,
       });
+      
+      console.log("Login successful:", response.data);
       // On success, just navigate to /photos
       navigate("/photos");
     } catch (error) {
-      setError(error.response?.data?.message || "Invalid email or password.");
+      console.error("Login error:", error);
+      console.error("Error response:", error.response);
+      
+      if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.message) {
+        setError(error.message);
+      } else {
+        setError("Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

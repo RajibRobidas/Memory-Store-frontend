@@ -13,7 +13,8 @@ const VideoPlayer = () => {
   useEffect(() => {
     const fetchVideo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/videos/${id}`);
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
+        const response = await axios.get(`${backendUrl}/videos/${id}`);
         setVideo(response.data);
         setLoading(false);
       } catch (err) {

@@ -74,8 +74,9 @@ const ImageUploadForm = () => {
       const formData = new FormData();
       formData.append("photo", selectedImage);
 
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
       const response = await axios.post(
-        "http://localhost:8081/images/upload", 
+        `${backendUrl}/images/upload`, 
         formData,
         {
           headers: {

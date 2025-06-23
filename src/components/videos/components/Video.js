@@ -25,7 +25,8 @@ const Video = () => {
           throw new Error("Authentication required");
         }
         
-        const response = await axios.get(`http://localhost:8081/videos/user/${userEmail}`, {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
+        const response = await axios.get(`${backendUrl}/videos/user/${userEmail}`, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "User-Email": userEmail

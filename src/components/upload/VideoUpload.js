@@ -96,8 +96,9 @@ const VideoUpload = () => {
       formData.append("video", video);
       formData.append("userEmail", userEmail);
 
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
       const response = await axios.post(
-        "http://localhost:8081/videos/upload",
+        `${backendUrl}/videos/upload`,
         formData,
         {
           headers: {

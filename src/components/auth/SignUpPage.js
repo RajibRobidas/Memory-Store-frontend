@@ -49,7 +49,8 @@ function SignupPage() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8081/auth/signup", {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
+      const response = await axios.post(`${backendUrl}/auth/signup`, {
         fullName,
         email,
         password,

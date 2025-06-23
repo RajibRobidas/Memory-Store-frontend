@@ -22,7 +22,8 @@ function LoginPage() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8081/auth/signin", {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
+      const response = await axios.post(`${backendUrl}/auth/signin`, {
         email,
         password,
       });

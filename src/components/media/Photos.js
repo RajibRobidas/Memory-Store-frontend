@@ -18,7 +18,8 @@ function Photos() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get("http://localhost:8081/images", {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
+        const response = await axios.get(`${backendUrl}/images`, {
           headers: {
             "User-Email": localStorage.getItem("userEmail"),
             Authorization: `Bearer ${localStorage.getItem("token")}`,

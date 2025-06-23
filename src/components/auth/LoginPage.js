@@ -27,28 +27,9 @@ function LoginPage() {
         email,
         password,
       });
-
-      console.log("Login successful:", response.data);
-
-      // Store user data
-      localStorage.setItem("userEmail", email);
       localStorage.setItem("token", response.data.jwt);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      
-      const userData = {
-        fullName: response.data.fullName,
-        email: response.data.email,
-        role: response.data.role,
-        mobile: response.data.mobile,
-        profilePicture: response.data.profilePicture || null,
-      };
-      
-      localStorage.setItem("userData", JSON.stringify(userData));
-      window.dispatchEvent(new Event("storage"));
-
       navigate("/photos");
     } catch (error) {
-      console.error("Login failed:", error.response ? error.response.data : error.message);
       setError(error.response?.data?.message || "Invalid email or password.");
     } finally {
       setIsLoading(false);

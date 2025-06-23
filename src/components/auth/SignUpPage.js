@@ -57,28 +57,9 @@ function SignupPage() {
         role,
         mobile,
       });
-
-      console.log(response.data);
-
-      // Store user data
       localStorage.setItem("token", response.data.jwt);
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      
-      const userData = {
-        fullName: response.data.fullName,
-        email: response.data.email,
-        role: response.data.role,
-        mobile: response.data.mobile,
-        profilePicture: response.data.profilePicture || null,
-      };
-
-      localStorage.setItem("userData", JSON.stringify(userData));
-      window.dispatchEvent(new Event("storage"));
-      
       navigate("/photos");
     } catch (error) {
-      console.error("Signup failed:", error.response ? error.response.data : error.message);
       setError(error.response?.data?.message || error.message);
     } finally {
       setIsLoading(false);

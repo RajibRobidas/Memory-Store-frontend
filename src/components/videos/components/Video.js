@@ -18,19 +18,11 @@ const Video = () => {
     
     const fetchVideos = async () => {
       try {
-        const userEmail = localStorage.getItem('userEmail');
-        const token = localStorage.getItem('token');
-        
-        if (!userEmail || !token) {
-          throw new Error("Authentication required");
-        }
-        
         const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
-        const response = await axios.get(`${backendUrl}/videos/user/${userEmail}`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "User-Email": userEmail
-          }
+        const token = localStorage.getItem("token");
+        const email = "user@example.com"; // Replace with actual user email if available
+        const response = await axios.get(`${backendUrl}/videos/user/${email}`, {
+          headers: { Authorization: `Bearer ${token}` }
         });
         setVideos(response.data);
         setFilteredVideos(response.data);

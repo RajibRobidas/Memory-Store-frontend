@@ -12,13 +12,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import VideoPlayer from "./components/videos/components/VideoPlayer";
 import LandingPage from "./components/pages/LandingPage";
 
-
 function App() {
   return (
-    <div className="App">
-      <Navigation />
-      <div className="min-h-[75vh]">
-        <Router>
+    <Router>
+      <div className="App">
+        <Navigation />
+        <div className="min-h-[75vh]">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -40,16 +39,16 @@ function App() {
                 <VideoPage />
               </ProtectedRoute>
             } />
-          <Route path="/videoPlay" element={
+            <Route path="/videoPlay" element={
               <ProtectedRoute>
                 <VideoPlayer />
               </ProtectedRoute>
             } />
           </Routes>
-        </Router>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </Router>
   );
 }
 

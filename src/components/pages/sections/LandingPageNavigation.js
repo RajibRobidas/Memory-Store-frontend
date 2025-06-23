@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function LandingPageNavigation() {
   return (
@@ -19,20 +20,20 @@ function LandingPageNavigation() {
           
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</a>
-            <a href="#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Stories</a>
-            <a href="#pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</a>
-            <a href="#demo" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Demo</a>
+            <Link to="#features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
+            <Link to="#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Stories</Link>
+            <Link to="#pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+            <Link to="#demo" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Demo</Link>
           </div>
           
           {/* CTA Buttons */}
           <div className="flex items-center space-x-4">
-            <a href="/login" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
+            <Link to="/login" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               Sign In
-            </a>
-            <a href="/signup" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+            </Link>
+            <Link to="/signup" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
               Get Started Free
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -8,7 +8,6 @@ function Photos() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
-  const [filteredImages, setFilteredImages] = useState([]);
 
   useEffect(() => {
     console.log("Stored email:", localStorage.getItem("userEmail"));
@@ -24,7 +23,6 @@ function Photos() {
 
         if (!images || images.length === 0) {
           setImagesByDate({});
-          setFilteredImages([]);
           setLoading(false);
           return;
         }
@@ -45,7 +43,6 @@ function Photos() {
         }, {});
 
         setImagesByDate(grouped);
-        setFilteredImages(sortedImages);
 
         return response.data;
       } catch (err) {
@@ -61,7 +58,6 @@ function Photos() {
 
   useEffect(() => {
     if (!searchTerm.trim()) {
-      setFilteredImages(Object.values(imagesByDate).flat());
       return;
     }
 
@@ -71,7 +67,7 @@ function Photos() {
         img.fileName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         img.fileType?.toLowerCase().includes(searchTerm.toLowerCase())
       );
-    setFilteredImages(filtered);
+    // setFilteredImages(filtered);
   }, [searchTerm, imagesByDate]);
 
   const closeModal = (e) => {

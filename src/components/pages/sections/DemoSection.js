@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function DemoSection() {
   return (
@@ -23,9 +24,9 @@ function DemoSection() {
                 </svg>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Drop Your Photo Here</h3>
                 <p className="text-gray-600 mb-6">Or click to browse your device</p>
-                <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200">
+                <Link to="/upload" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200">
                   Try Demo Upload
-                </button>
+                </Link>
               </div>
               
               {/* Demo Results */}

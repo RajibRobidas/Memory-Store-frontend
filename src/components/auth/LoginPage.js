@@ -46,6 +46,9 @@ function LoginPage() {
       });
       
       console.log("Login successful:", response.data);
+      // Save token and email to localStorage
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userEmail', email);
       // On success, just navigate to /photos
       navigate("/photos");
     } catch (error) {

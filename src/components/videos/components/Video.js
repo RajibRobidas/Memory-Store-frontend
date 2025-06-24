@@ -36,7 +36,7 @@ const Video = () => {
         return;
       }
       try {
-        const response = await axios.get(`${backendUrl}/videos/user/${searchTerm}`, {
+        const response = await axios.get(`${backendUrl}/videos/user/${userEmail}`, {
           headers: {
             'User-Email': userEmail,
             'Authorization': `Bearer ${token}`

@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import backendUrl from '../../../backendUrl';
-// import { FaTimes } from "react-icons/fa";
+
+let backendUrl;
+try {
+  backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (!backendUrl) {
+    backendUrl = "https://memory-store-backend.onrender.com";
+  }
+} catch (envError) {
+  console.warn("Environment variable not found, using fallback:", envError);
+  backendUrl = "https://memory-store-backend.onrender.com";
+}
 
 const VideoPlayer = () => {
   const { id } = useParams();
@@ -13,12 +22,19 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     const fetchVideo = async () => {
+      const userEmail = localStorage.getItem("userEmail");
+      const token = localStorage.getItem("token");
+      if (!userEmail || !token) {
+        setError("You must be logged in to view this video. Please log in again.");
+        setLoading(false);
+        return;
+      }
       try {
-        const userEmail = localStorage.getItem("userEmail");
         const response = await axios.get(`${backendUrl}/videos/${id}`,
           {
             headers: {
-              'User-Email': userEmail
+              'User-Email': userEmail,
+              'Authorization': `Bearer ${token}`
             }
           }
         );

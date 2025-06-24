@@ -1,6 +1,16 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import backendUrl from '../../backendUrl';
+
+let backendUrl;
+try {
+  backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (!backendUrl) {
+    backendUrl = "https://memory-store-backend.onrender.com";
+  }
+} catch (envError) {
+  console.warn("Environment variable not found, using fallback:", envError);
+  backendUrl = "https://memory-store-backend.onrender.com";
+}
 
 const VideoUpload = () => {
   const [video, setVideo] = useState(null);
@@ -75,28 +85,22 @@ const VideoUpload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    const userEmail = localStorage.getItem("userEmail");
+    const token = localStorage.getItem("token");
+    if (!userEmail || !token) {
+      setError("You must be logged in to upload videos. Please log in again.");
+      return;
+    }
     if (!video) {
       setError("Please select a video file");
       return;
     }
-
-    const userEmail = localStorage.getItem("userEmail");
-    const token = localStorage.getItem("token");
-    
-    if (!userEmail || !token) {
-      setError("Please sign in to upload videos");
-      return;
-    }
-
     setIsUploading(true);
     setUploadProgress(0);
-
     try {
       const formData = new FormData();
       formData.append("video", video);
       formData.append("userEmail", userEmail);
-
       const response = await axios.post(
         `${backendUrl}/videos/upload`,
         formData,

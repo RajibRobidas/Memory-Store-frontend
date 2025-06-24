@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
-import backendUrl from '../../../backendUrl';
+
+let backendUrl;
+try {
+  backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (!backendUrl) {
+    backendUrl = "https://memory-store-backend.onrender.com";
+  }
+} catch (envError) {
+  console.warn("Environment variable not found, using fallback:", envError);
+  backendUrl = "https://memory-store-backend.onrender.com";
+}
 
 const Video = () => {
   const [videos, setVideos] = useState([]);
@@ -18,11 +28,18 @@ const Video = () => {
     Modal.setAppElement('#root');
     
     const fetchVideos = async () => {
+      const userEmail = localStorage.getItem("userEmail");
+      const token = localStorage.getItem("token");
+      if (!userEmail || !token) {
+        setError("You must be logged in to view videos. Please log in again.");
+        setLoading(false);
+        return;
+      }
       try {
-        const userEmail = localStorage.getItem("userEmail");
         const response = await axios.get(`${backendUrl}/videos/user/${searchTerm}`, {
           headers: {
-            'User-Email': userEmail
+            'User-Email': userEmail,
+            'Authorization': `Bearer ${token}`
           }
         });
         setVideos(response.data);

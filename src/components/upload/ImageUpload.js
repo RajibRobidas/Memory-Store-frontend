@@ -1,6 +1,16 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import backendUrl from '../../backendUrl';
+
+let backendUrl;
+try {
+  backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (!backendUrl) {
+    backendUrl = "https://memory-store-backend.onrender.com";
+  }
+} catch (envError) {
+  console.warn("Environment variable not found, using fallback:", envError);
+  backendUrl = "https://memory-store-backend.onrender.com";
+}
 
 const ImageUploadForm = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -62,26 +72,27 @@ const ImageUploadForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    const userEmail = localStorage.getItem('userEmail');
+    const token = localStorage.getItem('token');
+    if (!userEmail || !token) {
+      setError("You must be logged in to upload images. Please log in again.");
+      return;
+    }
     if (!selectedImage) {
       setError("Please select an image");
       return;
     }
-
     setIsUploading(true);
-
     try {
-      const userEmail = localStorage.getItem('userEmail');
       const formData = new FormData();
       formData.append("photo", selectedImage);
-
       const response = await axios.post(
         `${backendUrl}/images/upload`, 
         formData,
         {
           headers: {
             'User-Email': userEmail,
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${token}`
           }
         }
       );

@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import backendUrl from '../../backendUrl';
+
+let backendUrl;
+try {
+  backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (!backendUrl) {
+    backendUrl = "https://memory-store-backend.onrender.com";
+  }
+} catch (envError) {
+  console.warn("Environment variable not found, using fallback:", envError);
+  backendUrl = "https://memory-store-backend.onrender.com";
+}
 
 function Photos() {
   const [imagesByDate, setImagesByDate] = useState({});
@@ -12,8 +22,9 @@ function Photos() {
 
   useEffect(() => {
     const userEmail = localStorage.getItem("userEmail");
-    if (!userEmail) {
-      setError("You must be logged in to view images.");
+    const token = localStorage.getItem("token");
+    if (!userEmail || !token) {
+      setError("You must be logged in to view images. Please log in again.");
       setLoading(false);
       return;
     }
@@ -23,7 +34,8 @@ function Photos() {
         setError(null);
         const response = await axios.get(`${backendUrl}/images`, {
           headers: {
-            'User-Email': userEmail
+            'User-Email': userEmail,
+            'Authorization': `Bearer ${token}`
           }
         });
         const images = response.data;

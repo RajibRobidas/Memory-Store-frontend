@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
+import backendUrl from '../../../backendUrl';
 
 const Video = () => {
   const [videos, setVideos] = useState([]);
@@ -18,7 +19,6 @@ const Video = () => {
     
     const fetchVideos = async () => {
       try {
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
         const userEmail = localStorage.getItem("userEmail");
         const response = await axios.get(`${backendUrl}/videos/user/${searchTerm}`, {
           headers: {
@@ -72,7 +72,7 @@ const Video = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8081/videos/${id}`, {
+      await axios.delete(`${backendUrl}/videos/${id}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "User-Email": localStorage.getItem('userEmail')

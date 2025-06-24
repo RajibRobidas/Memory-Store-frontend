@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import backendUrl from '../../backendUrl';
 
 const VideoUpload = () => {
   const [video, setVideo] = useState(null);
@@ -96,7 +97,6 @@ const VideoUpload = () => {
       formData.append("video", video);
       formData.append("userEmail", userEmail);
 
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
       const response = await axios.post(
         `${backendUrl}/videos/upload`,
         formData,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import backendUrl from '../../../backendUrl';
 // import { FaTimes } from "react-icons/fa";
 
 const VideoPlayer = () => {
@@ -13,7 +14,6 @@ const VideoPlayer = () => {
   useEffect(() => {
     const fetchVideo = async () => {
       try {
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
         const userEmail = localStorage.getItem("userEmail");
         const response = await axios.get(`${backendUrl}/videos/${id}`,
           {

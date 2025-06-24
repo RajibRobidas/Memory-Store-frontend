@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import backendUrl from '../../backendUrl';
 
 const ImageUploadForm = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -74,7 +75,6 @@ const ImageUploadForm = () => {
       const formData = new FormData();
       formData.append("photo", selectedImage);
 
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
       const response = await axios.post(
         `${backendUrl}/images/upload`, 
         formData,

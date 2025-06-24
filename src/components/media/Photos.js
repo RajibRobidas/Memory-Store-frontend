@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import backendUrl from '../../backendUrl';
 
 function Photos() {
   const [imagesByDate, setImagesByDate] = useState({});
@@ -17,7 +18,8 @@ function Photos() {
         setLoading(true);
         setError(null);
 
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
+        console.log('🧪 VITE_BACKEND_URL:', backendUrl);
+
         const userEmail = localStorage.getItem("userEmail");
         const response = await axios.get(`${backendUrl}/images`, {
           headers: {

@@ -11,6 +11,7 @@ import VideoPage from "./components/videos/components/VideoPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VideoPlayer from "./components/videos/components/VideoPlayer";
 import LandingPage from "./components/pages/LandingPage";
+import Video from "./components/videos/components/Video";
 
 function App() {
   return (
@@ -42,6 +43,11 @@ function App() {
             <Route path="/videoPlay" element={
               <ProtectedRoute>
                 <VideoPlayer />
+              </ProtectedRoute>
+            } />
+            <Route path="/videos" element={
+              <ProtectedRoute>
+                <Video />
               </ProtectedRoute>
             } />
           </Routes>

@@ -54,11 +54,11 @@ function SignupPage() {
       try {
         backendUrl = import.meta.env.VITE_BACKEND_URL;
         if (!backendUrl) {
-          backendUrl = "http://localhost:8081";
+          backendUrl = "https://memory-store-backend.onrender.com";
         }
       } catch (envError) {
         console.warn("Environment variable not found, using fallback:", envError);
-        backendUrl = "http://localhost:8081";
+        backendUrl = "https://memory-store-backend.onrender.com";
       }
       
       console.log("Attempting signup with backend URL:", backendUrl);

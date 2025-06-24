@@ -27,15 +27,18 @@ function LoginPage() {
       try {
         backendUrl = import.meta.env.VITE_BACKEND_URL;
         if (!backendUrl) {
-          backendUrl = "http://localhost:8081";
+          backendUrl = "https://memory-store-backend.onrender.com";
         }
       } catch (envError) {
         console.warn("Environment variable not found, using fallback:", envError);
-        backendUrl = "http://localhost:8081";
+        backendUrl = "https://memory-store-backend.onrender.com";
       }
       
-      console.log("Attempting login with backend URL:", backendUrl);
+      console.log("=== LOGIN DEBUG INFO ===");
+      console.log("Backend URL:", backendUrl);
+      console.log("Full request URL:", `${backendUrl}/auth/signin`);
       console.log("Login data:", { email, password: "***" });
+      console.log("Environment variables:", import.meta.env);
       
       const response = await axios.post(`${backendUrl}/auth/signin`, {
         email,
@@ -46,10 +49,15 @@ function LoginPage() {
       // On success, just navigate to /photos
       navigate("/photos");
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("=== LOGIN ERROR DEBUG ===");
+      console.error("Error type:", error.name);
+      console.error("Error message:", error.message);
       console.error("Error response:", error.response);
+      console.error("Error config:", error.config);
       
-      if (error.response?.data?.error) {
+      if (error.code === 'ERR_NETWORK') {
+        setError("Network error: Cannot connect to backend. Please check if the backend is running.");
+      } else if (error.response?.data?.error) {
         setError(error.response.data.error);
       } else if (error.response?.data?.message) {
         setError(error.response.data.message);

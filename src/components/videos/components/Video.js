@@ -19,7 +19,12 @@ const Video = () => {
     const fetchVideos = async () => {
       try {
         const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
-        const response = await axios.get(`${backendUrl}/videos/user/${searchTerm}`);
+        const userEmail = localStorage.getItem("userEmail");
+        const response = await axios.get(`${backendUrl}/videos/user/${searchTerm}`, {
+          headers: {
+            'User-Email': userEmail
+          }
+        });
         setVideos(response.data);
         setFilteredVideos(response.data);
         setLoading(false);
@@ -69,7 +74,8 @@ const Video = () => {
       const token = localStorage.getItem('token');
       await axios.delete(`http://localhost:8081/videos/${id}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
+          "User-Email": localStorage.getItem('userEmail')
         }
       });
       setVideos(videos.filter(video => video.id !== id));

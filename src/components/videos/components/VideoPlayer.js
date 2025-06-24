@@ -14,7 +14,14 @@ const VideoPlayer = () => {
     const fetchVideo = async () => {
       try {
         const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8081";
-        const response = await axios.get(`${backendUrl}/videos/${id}`);
+        const userEmail = localStorage.getItem("userEmail");
+        const response = await axios.get(`${backendUrl}/videos/${id}`,
+          {
+            headers: {
+              'User-Email': userEmail
+            }
+          }
+        );
         setVideo(response.data);
         setLoading(false);
       } catch (err) {

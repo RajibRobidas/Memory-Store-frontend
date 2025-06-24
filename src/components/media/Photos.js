@@ -11,33 +11,30 @@ function Photos() {
   const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
-    console.log("Stored email:", localStorage.getItem("userEmail"));
-    console.log("Stored token:", localStorage.getItem("token"));
+    const userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+      setError("You must be logged in to view images.");
+      setLoading(false);
+      return;
+    }
     async function fetchImages() {
       try {
         setLoading(true);
         setError(null);
-
-        console.log('🧪 VITE_BACKEND_URL:', backendUrl);
-
-        const userEmail = localStorage.getItem("userEmail");
         const response = await axios.get(`${backendUrl}/images`, {
           headers: {
             'User-Email': userEmail
           }
         });
         const images = response.data;
-
         if (!images || images.length === 0) {
           setImagesByDate({});
           setLoading(false);
           return;
         }
-
         const sortedImages = [...images].sort(
           (a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)
         );
-
         const grouped = sortedImages.reduce((acc, img) => {
           const date = new Date(img.uploadedAt).toLocaleDateString("en-US", {
             year: "numeric",
@@ -48,18 +45,16 @@ function Photos() {
           acc[date].push(img);
           return acc;
         }, {});
-
         setImagesByDate(grouped);
-
         return response.data;
       } catch (err) {
-        console.error("Error fetching images:", err);
-        setError("Failed to load images");
+        let backendError = err.response?.data?.error || err.response?.data?.message;
+        setError(backendError || "Failed to load images");
+        setImagesByDate({});
       } finally {
         setLoading(false);
       }
     }
-
     fetchImages();
   }, []);
 
